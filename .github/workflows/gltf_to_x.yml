@@ -2,8 +2,8 @@ name: Convert GLTF to DirectX (.X) file
 
 on:
   push:
-    paths:
-      - "*.gltf"  # Run the action when a GLTF file is pushed
+    #paths:
+     # - "*.gltf"  # Run the action when a GLTF file is pushed
 
 jobs:
   convert:
@@ -26,7 +26,7 @@ jobs:
           done
 
       - name: Upload converted .X files
-        uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
         with:
           name: converted-x-files
-          path: converted/*.x
+          path: ./converted_files/*.zip
