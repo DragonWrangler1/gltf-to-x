@@ -1,7 +1,7 @@
 name: Convert GLTF to DirectX (.X) File
 
 on:
-  workflow_dispatch:
+  push:
     inputs:
       gltf_file:
         description: 'Path to the GLTF file'
