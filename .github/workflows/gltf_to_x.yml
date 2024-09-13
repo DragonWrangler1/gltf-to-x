@@ -1,31 +1,41 @@
-name: Convert GLTF to DirectX (.X) file
+name: Convert GLTF to DirectX (.X) File
 
 on:
-  push:
-    paths:
-      - "*.gltf"  # Run the action when a GLTF file is pushed
+  workflow_dispatch:
+    inputs:
+      gltf_file:
+        description: 'Path to the GLTF file'
+        required: true
+        default: 'input.gltf'
+      x_file:
+        description: 'Path for the output .X file'
+        required: true
+        default: 'output.x'
 
 jobs:
   convert:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        
-      - name: Install Assimp
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y assimp-utils
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Convert GLTF to .X
-        run: |
-          for file in *.gltf; do
-            assimp export "$file" "${file%.gltf}.x"
-          done
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
-      - name: Upload converted .X files
-        uses: actions/upload-artifact@v3
-        with:
-          name: converted-x-files
-          path: "*.x"
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y assimp
+        pip install -r requirements.txt
+
+    - name: Convert GLTF to .X
+      run: |
+        python convert_gltf_to_x.py ${{ github.event.inputs.gltf_file }} ${{ github.event.inputs.x_file }}
+
+    - name: Upload .X file
+      uses: actions/upload-artifact@v3
+      with:
+        name: converted-x-file
+        path: ${{ github.event.inputs.x_file }}
