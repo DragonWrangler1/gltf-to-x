@@ -2,8 +2,8 @@ name: Convert GLTF to DirectX (.X) file
 
 on:
   push:
-    #paths:
-     # - "*.gltf"  # Run the action when a GLTF file is pushed
+    paths:
+      - "*.gltf"  # Run the action when a GLTF file is pushed
 
 jobs:
   convert:
